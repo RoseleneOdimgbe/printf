@@ -1,44 +1,52 @@
 #include "main.h"
 
 /**
- * _puts - this prints a string with a newline
- * @str: this is the string to print
- * Return: the number of characters printed (excluding the null byte)
+ * _printf - this prints anything
+ * @format: the format string
+ * Return: the number of bytes printed
  */
 
-int _puts(char *str)
+int _printf(const char *format, ...)
 
 {
-	char *start = str;
 
-	while (*str)
-		_putchar(*str++);
+	int sum = 0;
+	va_list ap;
+	char *p, *start;
+	params_t params = PARAMS_INIT;
 
-	_putchar('\n'); /* this prints a newline at the end */
-	return (str - start + 1);
-}
+	va_start(ap, format);
 
-/**
- * _putchar - this writes the character c to stdout
- * @c: this is the character to print
- * Return: On success 1. On error, -1 is returned,
- * and errno is set appropriately
- */
-
-int _putchar(int c)
-
-{
-	static int index;
-	static char buffer[OUTPUT_BUF_SIZE];
-
-	if (c == BUF_FLUSH || index >= OUTPUT_BUF_SIZE)
+	if (!format || (format[0] == '%' && !format[1]))
+		return (-1);
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
+		return (-1);
+	for (p = (char *)format; *p; p++)
 	{
-		write(1, buffer, index);
-		index = 0;
+		init_params(&params, ap);
+		if (*p != '%')
+		{
+			sum += _putchar(*p);
+			continue;
+		}
+		start = p;
+		p++;
+		while (get_flag(p, &params)) /* while char at p is flag char */
+		{
+			p++; /* the next char */
+		}
+		p = get_width(p, &params, ap);
+		p = get_precision(p, &params, ap);
+		if (get_modifier(p, &params))
+			p++;
+		if (!get_specifier(p))
+			sum += print_from_to(start, p,
+				params.l_modifier || params.h_modifier ? p - 1 : 0);
+		else
+			sum += get_print_func(p, ap, &params);
 	}
+	_putchar(BUF_FLUSH);
+	va_end(ap);
+	return (sum);
 
-	if (c != BUF_FLUSH)
-		buffer[index++] = c;
-
-	return (1);
 }
