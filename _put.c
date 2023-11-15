@@ -1,44 +1,43 @@
 #include "main.h"
 
 /**
- * _puts - this prints a string with a newline
- * @str: this is the string to print
- * Return: the number of characters printed (excluding the null byte)
+ * _puts - this prints a string with newline
+ * @str: the string to print
+ * Return: void
  */
 
 int _puts(char *str)
 
 {
-	char *start = str;
+	char *a = str;
 
 	while (*str)
 		_putchar(*str++);
+	return (str - a);
 
-	_putchar('\n'); /* this prints a newline at the end */
-	return (str - start + 1);
 }
 
 /**
  * _putchar - this writes the character c to stdout
  * @c: this is the character to print
- * Return: On success 1. On error, -1 is returned,
- * and errno is set appropriately
+ * Return: On success 1
+ * On error, -1 is returned, and errno is set appropriately
  */
 
 int _putchar(int c)
 
 {
-	static int index;
-	static char buffer[OUTPUT_BUF_SIZE];
 
-	if (c == BUF_FLUSH || index >= OUTPUT_BUF_SIZE)
+	static int i;
+	static char buf[OUTPUT_BUF_SIZE];
+
+	if (c == BUF_FLUSH || i >= OUTPUT_BUF_SIZE)
 	{
-		write(1, buffer, index);
-		index = 0;
+		write(1, buf, i);
+		i = 0;
 	}
-
 	if (c != BUF_FLUSH)
-		buffer[index++] = c;
-
+		buf[i++] = c;
 	return (1);
+
 }
