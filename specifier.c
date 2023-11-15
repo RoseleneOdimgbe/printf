@@ -1,9 +1,9 @@
 #include "main.h"
 
 /**
- * get_specifier - this finds the corresponding format function
- * @s: the format specifier string
- * Return: the pointer to the corresponding print function
+ * get_specifier - this finds the format func
+ * @s: the format string
+ * Return: the number of bytes printed
  */
 
 int (*get_specifier(char *s))(va_list ap, params_t *params)
@@ -39,9 +39,9 @@ int (*get_specifier(char *s))(va_list ap, params_t *params)
 }
 
 /**
- * get_print_func - this gets the print function based on the format specifier
- * @s: the format specifier string
- * @ap: the argument pointer
+ * get_print_func - this finds the format func
+ * @s: the format string
+ * @ap: argument pointer
  * @params: the parameters struct
  * Return: the number of bytes printed
  */
@@ -56,61 +56,73 @@ int get_print_func(char *s, va_list ap, params_t *params)
 }
 
 /**
- * get_flag - this sets the corresponding flag in the parameters struct
- * @s: the format specifier string
+ * get_flag - this finds the flag func
+ * @s: the format string
  * @params: the parameters struct
- * Return: 1 if a flag was set, 0 otherwise
+ * Return: if flag was valid
  */
 
 int get_flag(char *s, params_t *params)
 {
+	int i = 0;
+
 	switch (*s)
 	{
 		case '+':
-			return (params->plus_flag = 1);
+			i = params->plus_flag = 1;
+			break;
 		case ' ':
-			return (params->space_flag = 1);
+			i = params->space_flag = 1;
+			break;
 		case '#':
-			return (params->hashtag_flag = 1);
+			i = params->hashtag_flag = 1;
+			break;
 		case '-':
-			return (params->minus_flag = 1);
+			i = params->minus_flag = 1;
+			break;
 		case '0':
-			return (params->zero_flag = 1);
-		default:
-			return (0);
+			i = params->zero_flag = 1;
+			break;
 	}
+	return (i);
 }
 
 /**
- * get_modifier - this sets the corresponding modifier in the parameters struct
- * @s: the format specifier string
+ * get_modifier - this finds the modifier func
+ * @s: the format string
  * @params: the parameters struct
- * Return: 1 if a modifier was set, 0 otherwise
+ * Return: if modifier was valid
  */
 
 int get_modifier(char *s, params_t *params)
 {
+	int i = 0;
+
 	switch (*s)
 	{
-		case 'h':
-			return (params->h_modifier = 1);
-		case 'l':
-			return (params->l_modifier = 1);
-		default:
-			return (0);
+	case 'h':
+		i = params->h_modifier = 1;
+		break;
+	case 'l':
+		i = params->l_modifier = 1;
+		break;
 	}
+	return (i);
 }
 
 /**
- * get_width - this extracts the width from the format specifier
- * @s: the format specifier string
+ * get_width - this gets the width from the format string
+ * @s: the format string
  * @params: the parameters struct
- * @ap: argument pointer
- * Return: the new pointer after extracting the width information
+ * @ap: the argument pointer
+ * Return: new pointer
  */
 
 char *get_width(char *s, params_t *params, va_list ap)
+/* should this function use char **s and modify the pointer? */
+
 {
+
 	int d = 0;
 
 	if (*s == '*')
@@ -125,4 +137,5 @@ char *get_width(char *s, params_t *params, va_list ap)
 	}
 	params->width = d;
 	return (s);
+
 }
