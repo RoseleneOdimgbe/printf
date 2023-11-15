@@ -24,17 +24,15 @@
  * @unsign: this flags for unsigned value
  * @plus_flag: this flags if plus_flag is specified
  * @space_flag: this flags if hashtag_flag is specified
- * @hashtag_flag: on if _flag is specified
- * @zero_flag: on if _flag is specified
- * @minus_flag: on if _flag specified
- *
- * @width: field width specified
- * @precision: field precision specified
- *
- * @h_modifier: on if h_modifier is specified
- * @l_modifier: on if l_modifier is specified
- *
+ * @hashtag_flag: this flags if _flag is specified
+ * @zero_flag: this flags if _flag is specified
+ * @minus_flag: this flags if _flag specified
+ * @width: the field width specified
+ * @precision: the field precision specified
+ * @h_modifier: this flags if h_modifier is specified
+ * @l_modifier: this flags if l_modifier is specified
  */
+
 typedef struct parameters
 {
 	unsigned int unsign			: 1;
@@ -51,11 +49,11 @@ typedef struct parameters
 	unsigned int h_modifier		: 1;
 	unsigned int l_modifier		: 1;
 } params_t;
+
 /**
- * struct specifier - Struct token
- *
- * @specifier: format token
- * @f: The function associated
+ * struct specifier - this is the struct token
+ * @specifier: this is the format token
+ * @f: this is the function associated
  */
 
 typedef struct specifier
@@ -64,23 +62,23 @@ typedef struct specifier
 	int (*f)(va_list, params_t *);
 } specifier_t;
 
-/* _put.c module */
+/* _put.c function prototype */
 int _puts(char *str);
 int _putchar(int c);
 
-/* print_functions.c module */
+/* print_functions.c function prototype */
 int print_char(va_list ap, params_t *params);
 int print_int(va_list ap, params_t *params);
 int print_string(va_list ap, params_t *params);
 int print_percent(va_list ap, params_t *params);
 int print_S(va_list ap, params_t *params);
 
-/* number.c module */
+/* number.c function prototype */
 char *convert(long int num, int base, int flags, params_t *params);
 int print_unsigned(va_list ap, params_t *params);
 int print_address(va_list ap, params_t *params);
 
-/* specifier.c module */
+/* specifier.c function prototype */
 int (*get_specifier(char *s))(va_list ap, params_t *params);
 int get_print_func(char *s, va_list ap, params_t *params);
 int get_flag(char *s, params_t *params);
